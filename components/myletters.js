@@ -18,7 +18,7 @@ export const LetterItems = [
   { letter: 'P' ,image: require('../assets/images/pencil.png')},
   { letter: 'Q' ,image: require('../assets/images/girl.png')},
   { letter: 'R' ,image: require('../assets/images/rat.png')},
-  { letter: 'S',image: require('../assets/images/snake.png') },
+  { letter: 'S',image: require('../assets/images/sneakers.png') },
   { letter: 'T',image: require('../assets/images/table.png') },
   { letter: 'U' ,image: require('../assets/images/umbrella.png')},
   { letter: 'V' ,image: require('../assets/images/violin.png')},

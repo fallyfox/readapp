@@ -1,6 +1,6 @@
 import { Audio } from 'expo-av'
 import { useEffect, useMemo, useRef, useState } from "react"
-import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View ,ScrollView } from "react-native"
+import { ScrollView, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native"
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 import { MyNumbers } from "../../components/mynumbers"
 import { appTheme } from "../../utilities/theme.colors"
@@ -30,32 +30,166 @@ export default function Mynumbers() {
   const [selected, setSelected] = useState(null)
   
   // load pop sound once and keep a reference
-  const soundRef = useRef(null)
+  // preload known sounds and keep references to avoid reload lag
+  const soundsRef = useRef({})
   useEffect(() => {
     let mounted = true
+
+    const files = {
+      pop: require('../sounds/pop.mp3'),
+      one: require("../sounds/one.mp3"),
+      two: require("../sounds/two.mp3"),
+      three: require('../sounds/three.mp3'),
+      four: require('../sounds/four.mp3'),
+      five: require('../sounds/five.mp3'),
+      six: require('../sounds/six.mp3'),
+      seven: require('../sounds/seven.mp3'),
+      eight: require('../sounds/eight.mp3'),
+      nine: require('../sounds/nine.mp3'),
+      ten: require('../sounds/ten.mp3'),
+      eleven: require('../sounds/eleven.mp3'),
+      twelve: require('../sounds/twelve.mp3'),
+      thirteen: require('../sounds/thirteen.mp3'),
+      fourteen: require('../sounds/fourteen.mp3'),
+      fifteen: require('../sounds/fifteen.mp3'),
+      sixteen: require('../sounds/sixteen.mp3'),
+      seventeen: require('../sounds/seventeen.mp3'),
+      eighteen:require("../sounds/eighteen.mp3"),
+      nineteen: require("../sounds/nineteen.mp3"),
+      tweenty: require("../sounds/tweenty.mp3"),
+      tweentyone: require("../sounds/tweentyone.mp3"),
+      tweentytwo: require("../sounds/tweentytwo.mp3"),
+      tweentythree: require("../sounds/tweentythree.mp3"),
+      tweentyfour: require("../sounds/tweentyfour.mp3"),
+      tweentyfive: require("../sounds/tweentyfive.mp3"),
+      tweentysix: require("../sounds/tweentysix.mp3"),
+      tweentyseven: require("../sounds/tweentyseven.mp3"),
+      tweentyeight: require("../sounds/tweentyeight.mp3"),
+      tweentynine: require("../sounds/tweentynine.mp3"),
+      thirty: require("../sounds/thirty.mp3"),
+      thirtyone:require("../sounds/thirtyone.mp3"),
+      thirtytwo: require("../sounds/thirtytwo.mp3"),
+      thirtythree: require("../sounds/thirtythree.mp3"),
+      thirtyfour: require("../sounds/thirtyfour.mp3"),
+      thirtyfive: require("../sounds/thirtyfive.mp3"),
+      thirtysix: require("../sounds/thirtysix.mp3"),
+      thirtyseven: require("../sounds/thirtyseven.mp3"),
+      thirtyeight: require("../sounds/thirtyeight.mp3"),
+      thirtynine: require("../sounds/thirtynine.mp3"),
+      fourty: require("../sounds/fourty.mp3"),
+      fourtyone: require("../sounds/fourtyone.mp3"),
+      fourtytwo: require("../sounds/fourtytwo.mp3"),
+      fourtythree: require("../sounds/fourtythree.mp3"),
+      fourtfour: require("../sounds/fourtyfour.mp3"),
+      fourtyfive: require("../sounds/fourtyfive.mp3"),
+      fourtysix: require("../sounds/fourtysix.mp3"),
+      fourtyseven: require("../sounds/fourtyseven.mp3"),
+      fourtyeight: require("../sounds/fourtyeight.mp3"),
+      fourtynine: require("../sounds/fourtynine.mp3"),
+      fivty: require("../sounds/fivty.mp3"),
+
+    }
+
     ;(async () => {
       try {
-        const { sound } = await Audio.Sound.createAsync(require('../sounds/pop.mp3'))
-        if (mounted) soundRef.current = sound
+        const entries = Object.entries(files)
+        for (const [key, module] of entries) {
+          try {
+            const { sound } = await Audio.Sound.createAsync(module)
+            if (!mounted) {
+              // if unmounted immediately after load, unload
+              await sound.unloadAsync().catch(() => {})
+              continue
+            }
+            soundsRef.current[key] = sound
+          } catch (innerErr) {
+            console.log(`Error loading sound ${key}`, innerErr)
+          }
+        }
       } catch (e) {
-        console.log('Error loading sound', e)
+        console.log('Error loading sounds', e)
       }
     })()
+
     return () => {
       mounted = false
-      if (soundRef.current) {
-        soundRef.current.unloadAsync().catch(() => {})
-      }
+      const map = soundsRef.current || {}
+      Object.values(map).forEach((s) => {
+        if (s && typeof s.unloadAsync === 'function') {
+          s.unloadAsync().catch(() => {})
+        }
+      })
     }
   }, [])
 
-  const playPop = async () => {
+  const playSoundForNumber = async (num) => {
     try {
-      if (!soundRef.current) return
-      await soundRef.current.setPositionAsync(0)
-      await soundRef.current.playAsync()
+      // mapping: use name for audio files that exist, fallback to 'pop'
+      const mapping = {
+        1: 'one',
+        2: 'two',
+        3: 'three',
+        4: 'four',
+        5: 'five',
+        6: 'six',
+        7: 'seven',
+        8: 'eight',
+        9: 'nine',
+        10: 'ten',
+        11: 'eleven',
+        12:  'twelve',
+        13: 'thirteen',
+        14: 'fourteen',
+        15: 'fifteen',
+        16: 'sixteen',
+        17: 'seventeen',
+        18: 'eighteen',
+        19: 'nineteen',
+        20: 'tweenty',
+        21: 'tweentyone',
+        22: 'tweentytwo',
+        23: 'tweentythree',
+        24: 'tweentyfour',
+        25: 'tweentyfive',
+        26: 'tweentysix',
+        27: 'tweentyseven',
+        28: 'tweentyeight',
+        29: 'tweentynine',
+        30: 'thirty',
+        31: 'thirtyone',
+        32: 'thirtytwo',
+        33: 'thirtythree',
+        34: 'thirtyfour',
+        35: 'thirtyfive',
+        36: 'thirtysix',
+        37: 'thirtyseven',
+        38: 'thirtyeight',
+        39: 'thirtynine',
+        40: 'fourty',
+        41: 'fourtyone',
+        42: 'fourtytwo',
+        43: 'fourtythree',
+        44: 'fourtfour',
+        45: 'fourtyfive',
+        46: 'fourtysix',
+        47: 'fourtyseven',
+        48: 'fourtyeight',
+        49: 'fourtynine',
+        50: 'fivty',
+
+        
+
+
+        
+      }
+
+      const key = mapping[num] || 'pop'
+      const sound = soundsRef.current && soundsRef.current[key]
+      if (!sound) return
+      await sound.setPositionAsync(0)
+      await sound.playAsync()
     } catch (e) {
-      console.log('Error playing sound', e)
+      console.log('Error playing sound for number', num, e)
     }
   }
 
@@ -74,7 +208,7 @@ export default function Mynumbers() {
               <TouchableOpacity
                 key={idx}
                 style={[styles.box, selected === idx && styles.selectedBox]}
-                onPress={() => { setSelected(prev => prev === idx ? null : idx); playPop() }}
+                onPress={() => { setSelected(prev => prev === idx ? null : idx); playSoundForNumber(n) }}
               >
                 <Text style={styles.number}>{n}</Text>
               </TouchableOpacity>

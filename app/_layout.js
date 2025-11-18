@@ -9,10 +9,13 @@ export default function RootLayout() {
           headerShown:false
         }} 
         />
-
         <Stack.Screen
         name="index"
-        options={{title:"index",headerShown:false}}/>
+        options={{
+          headerShown:false
+        }}
+        />
+     
      
       </Stack>
 

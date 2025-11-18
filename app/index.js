@@ -22,13 +22,15 @@ export default function Index() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.wrapper}>
-        <View><Text style={styles.header}>READ APP</Text></View>
+        <View><Link href="/(tabs)/alphabets"><Text style={styles.header}>READ APP</Text></Link></View>
         <View style={styles.content}>
-          <Image
-            source={require("../assets/images/game.png")}
-            style={styles.img}
-          
-          />
+          <Link href="/(tabs)/alphabets">
+            <Image
+              source={require("../assets/images/game.png")}
+              style={styles.img}
+            
+            />
+          </Link>
           <Text style={styles.introText}>Ready to learn? Read App makes essential learning simple and fun. Designed for kids, it’s a complete curriculum that covers the alphabet, numbers, and quick mastery of first words and sentences. Give your child the perfect start to their academic adventure!</Text>
         </View>
         <View>
@@ -38,7 +40,7 @@ export default function Index() {
             </View>
           </Link>
         </View>
-       
+         
       </SafeAreaView>
     </SafeAreaProvider>
   );
