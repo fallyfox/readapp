@@ -1,27 +1,12 @@
 import { Link } from "expo-router";
-import { Text, View, StyleSheet,Image} from "react-native";
-import { SafeAreaProvider,SafeAreaView } from "react-native-safe-area-context";
-import { useFonts } from "expo-font";
+import { Image, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { appTheme } from "../utilities/theme.colors";
 
 
 export default function Index() {
-  const [fontsLoaded] = useFonts({
-    "Raleway-Light":require("../assets/fonts/Raleway-Light.ttf"),
-    "Raleway-Regular":require("../assets/fonts/Raleway-Regular.ttf"),
-    "CutOutsFLF":require("../assets/fonts/CutOutsFLF.ttf"),
-    "CFNuclearWar-Regular":require("../assets/fonts/CFNuclearWar-Regular.ttf"),
-    "Chocolate Bar Demo":require("../assets/fonts/Chocolate Bar Demo.otf")
-  });
-
-  if (!fontsLoaded){
-    return null
-  };
-
-
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.wrapper}>
+    <SafeAreaView style={styles.wrapper}>
         <View><Link href="/(tabs)/alphabets"><Text style={styles.header}>READ APP</Text></Link></View>
         <View style={styles.content}>
           <Link href="/(tabs)/alphabets">
@@ -37,12 +22,13 @@ export default function Index() {
           <Link href="/(tabs)/alphabets">
             <View  style={styles.link}>
                 <Text style={{fontSize:27,color:appTheme.navy,fontFamily:"Chocolate Bar Demo",fontWeight:800}}>Get Started</Text>
+                
             </View>
           </Link>
+         
         </View>
          
       </SafeAreaView>
-    </SafeAreaProvider>
   );
 }
 

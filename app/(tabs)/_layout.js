@@ -7,7 +7,7 @@ import { appTheme } from '../../utilities/theme.colors';
 
 export default function _Layout() {
     return(
-        <Tabs screenOptions={{tabBarActiveTintColor:appTheme.orange}}>
+        <Tabs screenOptions={{tabBarActiveTintColor:appTheme.peach}}>
             <Tabs.Screen 
             name="alphabets"
             options={{title:"ABC",headerShown:false,

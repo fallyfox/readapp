@@ -1,37 +1,45 @@
 {
   "expo": {
-    "name": "readapp",
+    "name": "ReadApp",
     "slug": "readapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/applg.png",
+    "icon": "./assets/images/AppIcon.png",
     "scheme": "readapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.djmanuwave.readapp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/applg.png",
-        "backgroundImage": "./assets/images/applg.png",
-        "monochromeImage": "./assets/images/applg.png"
+        "foregroundImage": "./assets/images/AppIcon.png",
+        "backgroundImage": "./assets/images/AppIcon.png",
+        "monochromeImage": "./assets/images/AppIcon.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.djmanuwave.readapp"
+      "package": "com.djmanuwave.readapp",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/applg.png"
+      "favicon": "./assets/images/favicon2.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/applg.png",
+          "image": "./assets/images/splashicon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
@@ -43,7 +51,8 @@
       "expo-font",
       "expo-audio",
       "expo-video",
-      "expo-asset"
+      "expo-asset",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

@@ -5,6 +5,8 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 import { LetterItems } from "../../components/myletters"
 import { appTheme } from '../../utilities/theme.colors'
 
+
+
 // Responsive sizing utilities
 
 const GRID_ITEMS_PER_ROW = 4 // Adjust this to control how many items per row
@@ -25,8 +27,11 @@ const getResponsiveSizes = (screenWidth) => {
     }
 }
 
+
+
 export default function Alphabets() {
-    const { width: screenWidth } = useWindowDimensions()
+
+     const { width: screenWidth } = useWindowDimensions()
     const responsiveSizes = useMemo(() => getResponsiveSizes(screenWidth), [screenWidth])
     
     // per-item flip toggles and per-item animated values
@@ -131,7 +136,8 @@ export default function Alphabets() {
 const getStyles = (sizes) => StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: appTheme.navy,
+        backgroundColor: appTheme.peach,
+       
         
     },
     grid: {
@@ -161,6 +167,7 @@ const getStyles = (sizes) => StyleSheet.create({
         fontSize: sizes.fontSize,
         fontWeight: 'bold',
         color: '#333',
+        fontFamily: 'BrophyOpti',
     },
     selectedBox: {
         borderWidth: sizes.borderWidth,
@@ -203,10 +210,11 @@ const getStyles = (sizes) => StyleSheet.create({
         // back face (optional styles)
     },
   header: { textAlign: 'center',
-        fontSize: 24,
-        fontWeight: '700',
+        fontSize: 35,
+        fontWeight: '900',
         marginVertical: 8,
-        color:appTheme.orange,
+        color:"black",
         letterSpacing:4.4,
+        fontFamily:"Fontspring-DEMO-leyendo-bold"
      }
 })

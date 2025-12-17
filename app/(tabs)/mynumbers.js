@@ -22,6 +22,61 @@ const getResponsiveSizes = (screenWidth) => {
   }
 }
 
+// Move files object outside component to avoid dependency issues
+const SOUND_FILES = {
+  pop: require('../sounds/pop.mp3'),
+  one: require("../sounds/one.mp3"),
+  two: require("../sounds/two.mp3"),
+  three: require('../sounds/three.mp3'),
+  four: require('../sounds/four.mp3'),
+  five: require('../sounds/five.mp3'),
+  six: require('../sounds/six.mp3'),
+  seven: require('../sounds/seven.mp3'),
+  eight: require('../sounds/eight.mp3'),
+  nine: require('../sounds/nine.mp3'),
+  ten: require('../sounds/ten.mp3'),
+  eleven: require('../sounds/eleven.mp3'),
+  twelve: require('../sounds/twelve.mp3'),
+  thirteen: require('../sounds/thirteen.mp3'),
+  fourteen: require('../sounds/fourteen.mp3'),
+  fifteen: require('../sounds/fifteen.mp3'),
+  sixteen: require('../sounds/sixteen.mp3'),
+  seventeen: require('../sounds/seventeen.mp3'),
+  eighteen:require("../sounds/eighteen.mp3"),
+  nineteen: require("../sounds/nineteen.mp3"),
+  tweenty: require("../sounds/tweenty.mp3"),
+  tweentyone: require("../sounds/tweentyone.mp3"),
+  tweentytwo: require("../sounds/tweentytwo.mp3"),
+  tweentythree: require("../sounds/tweentythree.mp3"),
+  tweentyfour: require("../sounds/tweentyfour.mp3"),
+  tweentyfive: require("../sounds/tweentyfive.mp3"),
+  tweentysix: require("../sounds/tweentysix.mp3"),
+  tweentyseven: require("../sounds/tweentyseven.mp3"),
+  tweentyeight: require("../sounds/tweentyeight.mp3"),
+  tweentynine: require("../sounds/tweentynine.mp3"),
+  thirty: require("../sounds/thirty.mp3"),
+  thirtyone:require("../sounds/thirtyone.mp3"),
+  thirtytwo: require("../sounds/thirtytwo.mp3"),
+  thirtythree: require("../sounds/thirtythree.mp3"),
+  thirtyfour: require("../sounds/thirtyfour.mp3"),
+  thirtyfive: require("../sounds/thirtyfive.mp3"),
+  thirtysix: require("../sounds/thirtysix.mp3"),
+  thirtyseven: require("../sounds/thirtyseven.mp3"),
+  thirtyeight: require("../sounds/thirtyeight.mp3"),
+  thirtynine: require("../sounds/thirtynine.mp3"),
+  fourty: require("../sounds/fourty.mp3"),
+  fourtyone: require("../sounds/fourtyone.mp3"),
+  fourtytwo: require("../sounds/fourtytwo.mp3"),
+  fourtythree: require("../sounds/fourtythree.mp3"),
+  fourtyfour: require("../sounds/fourtyfour.mp3"),
+  fourtyfive: require("../sounds/fourtyfive.mp3"),
+  fourtysix: require("../sounds/fourtysix.mp3"),
+  fourtyseven: require("../sounds/fourtyseven.mp3"),
+  fourtyeight: require("../sounds/fourtyeight.mp3"),
+  fourtynine: require("../sounds/fourtynine.mp3"),
+  fivty: require("../sounds/fivty.mp3"),
+}
+
 export default function Mynumbers() {
   const { width: screenWidth } = useWindowDimensions()
   const sizes = useMemo(() => getResponsiveSizes(screenWidth), [screenWidth])
@@ -29,70 +84,17 @@ export default function Mynumbers() {
 
   const [selected, setSelected] = useState(null)
   
-  // load pop sound once and keep a reference
   // preload known sounds and keep references to avoid reload lag
   const soundsRef = useRef({})
-  // sound files mapping (moved to component scope so play function can access)
-  const files = {
-    pop: require('../sounds/pop.mp3'),
-    one: require("../sounds/one.mp3"),
-    two: require("../sounds/two.mp3"),
-    three: require('../sounds/three.mp3'),
-    four: require('../sounds/four.mp3'),
-    five: require('../sounds/five.mp3'),
-    six: require('../sounds/six.mp3'),
-    seven: require('../sounds/seven.mp3'),
-    eight: require('../sounds/eight.mp3'),
-    nine: require('../sounds/nine.mp3'),
-    ten: require('../sounds/ten.mp3'),
-    eleven: require('../sounds/eleven.mp3'),
-    twelve: require('../sounds/twelve.mp3'),
-    thirteen: require('../sounds/thirteen.mp3'),
-    fourteen: require('../sounds/fourteen.mp3'),
-    fifteen: require('../sounds/fifteen.mp3'),
-    sixteen: require('../sounds/sixteen.mp3'),
-    seventeen: require('../sounds/seventeen.mp3'),
-    eighteen:require("../sounds/eighteen.mp3"),
-    nineteen: require("../sounds/nineteen.mp3"),
-    tweenty: require("../sounds/tweenty.mp3"),
-    tweentyone: require("../sounds/tweentyone.mp3"),
-    tweentytwo: require("../sounds/tweentytwo.mp3"),
-    tweentythree: require("../sounds/tweentythree.mp3"),
-    tweentyfour: require("../sounds/tweentyfour.mp3"),
-    tweentyfive: require("../sounds/tweentyfive.mp3"),
-    tweentysix: require("../sounds/tweentysix.mp3"),
-    tweentyseven: require("../sounds/tweentyseven.mp3"),
-    tweentyeight: require("../sounds/tweentyeight.mp3"),
-    tweentynine: require("../sounds/tweentynine.mp3"),
-    thirty: require("../sounds/thirty.mp3"),
-    thirtyone:require("../sounds/thirtyone.mp3"),
-    thirtytwo: require("../sounds/thirtytwo.mp3"),
-    thirtythree: require("../sounds/thirtythree.mp3"),
-    thirtyfour: require("../sounds/thirtyfour.mp3"),
-    thirtyfive: require("../sounds/thirtyfive.mp3"),
-    thirtysix: require("../sounds/thirtysix.mp3"),
-    thirtyseven: require("../sounds/thirtyseven.mp3"),
-    thirtyeight: require("../sounds/thirtyeight.mp3"),
-    thirtynine: require("../sounds/thirtynine.mp3"),
-    fourty: require("../sounds/fourty.mp3"),
-    fourtyone: require("../sounds/fourtyone.mp3"),
-    fourtytwo: require("../sounds/fourtytwo.mp3"),
-    fourtythree: require("../sounds/fourtythree.mp3"),
-    fourtfour: require("../sounds/fourtyfour.mp3"),
-    fourtyfive: require("../sounds/fourtyfive.mp3"),
-    fourtysix: require("../sounds/fourtysix.mp3"),
-    fourtyseven: require("../sounds/fourtyseven.mp3"),
-    fourtyeight: require("../sounds/fourtyeight.mp3"),
-    fourtynine: require("../sounds/fourtynine.mp3"),
-    fivty: require("../sounds/fivty.mp3"),
-  }
 
   useEffect(() => {
     let mounted = true
+    // Capture soundsRef.current for cleanup to avoid stale reference
+    const soundsMap = soundsRef.current
 
     ;(async () => {
       try {
-        const entries = Object.entries(files)
+        const entries = Object.entries(SOUND_FILES)
         for (const [key, module] of entries) {
           try {
             const { sound } = await Audio.Sound.createAsync(module)
@@ -113,8 +115,8 @@ export default function Mynumbers() {
 
     return () => {
       mounted = false
-      const map = soundsRef.current || {}
-      Object.values(map).forEach((s) => {
+      // Use captured soundsMap instead of soundsRef.current
+      Object.values(soundsMap).forEach((s) => {
         if (s && typeof s.unloadAsync === 'function') {
           s.unloadAsync().catch(() => {})
         }
@@ -169,7 +171,7 @@ export default function Mynumbers() {
         41: 'fourtyone',
         42: 'fourtytwo',
         43: 'fourtythree',
-        44: 'fourtfour',
+        44: 'fourtyfour',
         45: 'fourtyfive',
         46: 'fourtysix',
         47: 'fourtyseven',
@@ -185,9 +187,9 @@ export default function Mynumbers() {
         console.log(`[mynumbers] no sound loaded for key=${key}, falling back to pop`)
         sound = soundsRef.current && soundsRef.current['pop']
         // if pop isn't loaded, try to load it now
-        if (!sound && files['pop']) {
+        if (!sound && SOUND_FILES['pop']) {
           try {
-            const res = await Audio.Sound.createAsync(files['pop'])
+            const res = await Audio.Sound.createAsync(SOUND_FILES['pop'])
             soundsRef.current['pop'] = res.sound
             sound = res.sound
             console.log('[mynumbers] lazily loaded pop fallback')
@@ -212,9 +214,9 @@ export default function Mynumbers() {
         // If the player was unloaded or destroyed, recreate and retry once
         if (msg.toLowerCase().includes('player does not exist') || msg.toLowerCase().includes('player was disposed')) {
           console.log(`[mynumbers] detected disposed player for key=${key}, attempting recreate`)
-          try {
-            if (files[key]) {
-              const res = await Audio.Sound.createAsync(files[key])
+            try {
+            if (SOUND_FILES[key]) {
+              const res = await Audio.Sound.createAsync(SOUND_FILES[key])
               soundsRef.current[key] = res.sound
               await res.sound.setPositionAsync(0)
               await res.sound.playAsync()
@@ -225,9 +227,9 @@ export default function Mynumbers() {
           }
 
           // fallback to pop if recreate failed
-          try {
-            if (files.pop) {
-              const res2 = await Audio.Sound.createAsync(files.pop)
+            try {
+            if (SOUND_FILES.pop) {
+              const res2 = await Audio.Sound.createAsync(SOUND_FILES.pop)
               soundsRef.current.pop = res2.sound
               await res2.sound.setPositionAsync(0)
               await res2.sound.playAsync()
@@ -273,15 +275,16 @@ export default function Mynumbers() {
 const getStyles = (sizes) => StyleSheet.create({
   container: { 
     flex: 1, 
-    backgroundColor: appTheme.navy 
+    backgroundColor: appTheme.peach
   },
   header: { 
     textAlign: 'center',
-    fontSize: 24,
-    fontWeight: '700',
+    fontSize: 35,
+    fontWeight: '800',
     marginVertical: 8,
-    color: appTheme.orange,
-    letterSpacing: 4.4
+    color: "black",
+    letterSpacing: 4.4,
+    fontFamily: "Fontspring-DEMO-leyendo-bold"
   },
   scrollContainer: {
     flexGrow: 1,
@@ -302,6 +305,6 @@ const getStyles = (sizes) => StyleSheet.create({
     backgroundColor: '#f7f7f7',
     borderRadius: sizes.itemSize / 2,
   },
-  number: { fontSize: sizes.fontSize, fontWeight: '700', color: '#111' },
-  selectedBox: { borderWidth: sizes.borderWidth, borderColor: appTheme.orange },
+  number: { fontSize: sizes.fontSize, fontWeight: '700', color: '#111',fontFamily:"BrophyOpti" },
+  selectedBox: { borderWidth: sizes.borderWidth, borderColor: "black" },
 })

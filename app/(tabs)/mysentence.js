@@ -55,15 +55,17 @@ export default function Mysentence() {
 
     // Animation when selecting a sentence
     const handleSentencePress = (id) => {
-        setSelectedMap(prev => ({ ...prev, [id]: !prev[id] }))
-        playPop()
+        setSelectedMap(prev => ({ ...prev, [id]: !prev[id],...prev }))
+        setTimeout(() => {
+            playPop()
+        }, 0)
     }
 
     return (
         <SafeAreaProvider>
-            <SafeAreaView style={styles.container}>
+            <SafeAreaView style={[styles.container,{ backgroundColor: appTheme.peach }]}>
                 <View>
-                    <Text style={styles.header}>LEARN SENTENCES</Text>
+                    <Text style={styles.header}>SENTENCES</Text>
                 </View>
                 <ScrollView 
                     contentContainerStyle={styles.scrollContent}
@@ -84,7 +86,7 @@ export default function Mysentence() {
                                 <Text style={styles.letterText}>{letter}</Text>
                                 <Text style={[
                                     styles.sentenceText,
-                                    selectedMap[letter] && styles.selectedSentenceText
+                                    selectedMap[letter] ? styles.selectedSentenceText : styles.sentenceText
                                 ]}>{sentence}</Text>
                             </TouchableOpacity>
                         </View>
@@ -98,19 +100,21 @@ export default function Mysentence() {
 const getStyles = (sizes) => StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: appTheme.navy,
+        backgroundColor: appTheme.peach,
     },
     header: {
-        fontSize: 24,
+         fontSize: 35,
         fontWeight: '700',
-        color: appTheme.orange,
         textAlign: 'center',
         marginVertical: sizes.spacing,
-        letterSpacing: 4
+        letterSpacing: 4,
+        color:"black",
+        fontFamily: "Fontspring-DEMO-leyendo-bold"
     },
     scrollContent: {
         padding: sizes.padding,
-        gap: sizes.spacing
+        gap: sizes.spacing,
+         
     },
     card: {
         backgroundColor: '#f8f9fa',
@@ -123,8 +127,8 @@ const getStyles = (sizes) => StyleSheet.create({
         shadowRadius: 4
     },
     selectedCard: {
-        borderWidth: 2,
-        borderColor: appTheme.orange
+        borderWidth: 8,
+        borderColor: "black"
     },
     cardContent: {
         padding: sizes.padding,
@@ -136,12 +140,16 @@ const getStyles = (sizes) => StyleSheet.create({
         marginBottom: sizes.spacing
     },
     sentenceText: {
-        fontSize: sizes.fontSize * 1.2,
+        fontSize: sizes.fontSize * 1.5,
         color: '#2c3e50',
-        lineHeight: sizes.fontSize * 1.8
+        lineHeight: sizes.fontSize * 1.8,
+        fontFamily: "BrophyOpti",
+
     },
     selectedSentenceText: {
-        color: appTheme.orange,
-        fontWeight: '600'
+        color: appTheme.peach,
+        fontWeight: '800',
+        fontFamily: "BrophyOpti",
+        fontSize: sizes.fontSize * 1.6,
     }
 })

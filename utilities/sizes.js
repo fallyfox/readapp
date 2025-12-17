@@ -6,14 +6,15 @@ export const sizes = {
     // Base spacing units
     spacing: 10,
     spacingSmall: 5,
-    spacingMedium: 15,
+    spacingMedium: 30,
     spacingLarge: 20,
 
     // Font sizes
-    fontHeader: 32,
+    fontHeader: 35,
     fontTitle: 24,
-    fontBody: 18,
+    fontBody: 24,
     fontSmall: 14,
+   
 
     // Border radius
     radiusSmall: 5,
