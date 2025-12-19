@@ -64,17 +64,17 @@ const SOUND_FILES = {
   thirtyseven: require("../sounds/thirtyseven.mp3"),
   thirtyeight: require("../sounds/thirtyeight.mp3"),
   thirtynine: require("../sounds/thirtynine.mp3"),
-  fourty: require("../sounds/fourty.mp3"),
-  fourtyone: require("../sounds/fourtyone.mp3"),
-  fourtytwo: require("../sounds/fourtytwo.mp3"),
-  fourtythree: require("../sounds/fourtythree.mp3"),
-  fourtyfour: require("../sounds/fourtyfour.mp3"),
-  fourtyfive: require("../sounds/fourtyfive.mp3"),
-  fourtysix: require("../sounds/fourtysix.mp3"),
-  fourtyseven: require("../sounds/fourtyseven.mp3"),
-  fourtyeight: require("../sounds/fourtyeight.mp3"),
-  fourtynine: require("../sounds/fourtynine.mp3"),
-  fivty: require("../sounds/fivty.mp3"),
+  forty: require("../sounds/forty.mp3"),
+  fortyone: require("../sounds/fortyone.mp3"),
+  fortytwo: require("../sounds/fortytwo.mp3"),
+  fortythree: require("../sounds/fortythree.mp3"),
+  fortyfour: require("../sounds/fortyfour.mp3"),
+  fortyfive: require("../sounds/fortyfive.mp3"),
+  fortysix: require("../sounds/fortysix.mp3"),
+  fortyseven: require("../sounds/fortyseven.mp3"),
+  fortyeight: require("../sounds/fortyeight.mp3"),
+  fortynine: require("../sounds/fortynine.mp3"),
+  fifty: require("../sounds/fifty.mp3"),
 }
 
 export default function Mynumbers() {
@@ -84,39 +84,14 @@ export default function Mynumbers() {
 
   const [selected, setSelected] = useState(null)
   
-  // preload known sounds and keep references to avoid reload lag
+  // Lazy-load sounds on demand and keep references for reuse
   const soundsRef = useRef({})
-
   useEffect(() => {
-    let mounted = true
-    // Capture soundsRef.current for cleanup to avoid stale reference
-    const soundsMap = soundsRef.current
-
-    ;(async () => {
-      try {
-        const entries = Object.entries(SOUND_FILES)
-        for (const [key, module] of entries) {
-          try {
-            const { sound } = await Audio.Sound.createAsync(module)
-            if (!mounted) {
-              await sound.unloadAsync().catch(() => {})
-              continue
-            }
-            soundsRef.current[key] = sound
-            console.log(`[mynumbers] preloaded sound: ${key}`)
-          } catch (innerErr) {
-            console.log(`[mynumbers] Error loading sound ${key}`, innerErr)
-          }
-        }
-      } catch (e) {
-        console.log('[mynumbers] Error loading sounds', e)
-      }
-    })()
-
+    // capture current ref value so cleanup uses the same references
+    const loadedSounds = soundsRef.current
     return () => {
-      mounted = false
-      // Use captured soundsMap instead of soundsRef.current
-      Object.values(soundsMap).forEach((s) => {
+      // Unload all loaded sounds on unmount (uses captured references)
+      Object.values(loadedSounds).forEach((s) => {
         if (s && typeof s.unloadAsync === 'function') {
           s.unloadAsync().catch(() => {})
         }
@@ -167,35 +142,44 @@ export default function Mynumbers() {
         37: 'thirtyseven',
         38: 'thirtyeight',
         39: 'thirtynine',
-        40: 'fourty',
-        41: 'fourtyone',
-        42: 'fourtytwo',
-        43: 'fourtythree',
-        44: 'fourtyfour',
-        45: 'fourtyfive',
-        46: 'fourtysix',
-        47: 'fourtyseven',
-        48: 'fourtyeight',
-        49: 'fourtynine',
-        50: 'fivty'
+        40: 'forty',
+        41: 'fortyone',
+        42: 'fortytwo',
+        43: 'fortythree',
+        44: 'fortyfour',
+        45: 'fortyfive',
+        46: 'fortysix',
+        47: 'fortyseven',
+        48: 'fortyeight',
+        49: 'fortynine',
+        50: 'fifty'
       }
 
       const key = mapping[num] || 'pop'
+      console.log(`[mynumbers] playing sound for num=${num}, key=${key}`)
       let sound = soundsRef.current && soundsRef.current[key]
 
-      if (!sound) {
-        console.log(`[mynumbers] no sound loaded for key=${key}, falling back to pop`)
-        sound = soundsRef.current && soundsRef.current['pop']
-        // if pop isn't loaded, try to load it now
-        if (!sound && SOUND_FILES['pop']) {
-          try {
-            const res = await Audio.Sound.createAsync(SOUND_FILES['pop'])
-            soundsRef.current['pop'] = res.sound
-            sound = res.sound
-            console.log('[mynumbers] lazily loaded pop fallback')
-          } catch (e) {
-            console.log('[mynumbers] failed to load pop fallback', e)
-          }
+      // Lazy load the sound if not already loaded
+      if (!sound && SOUND_FILES[key]) {
+        try {
+          const res = await Audio.Sound.createAsync(SOUND_FILES[key])
+          soundsRef.current[key] = res.sound
+          sound = res.sound
+          console.log(`[mynumbers] lazy loaded sound: ${key}`)
+        } catch (e) {
+          console.log(`[mynumbers] failed to lazy load sound for key=${key}`, e)
+        }
+      }
+
+      // Fallback to pop if still not found
+      if (!sound && SOUND_FILES['pop']) {
+        try {
+          const res = await Audio.Sound.createAsync(SOUND_FILES['pop'])
+          soundsRef.current['pop'] = res.sound
+          sound = res.sound
+          console.log('[mynumbers] lazily loaded pop fallback')
+        } catch (e) {
+          console.log('[mynumbers] failed to load pop fallback', e)
         }
       }
 
@@ -214,7 +198,7 @@ export default function Mynumbers() {
         // If the player was unloaded or destroyed, recreate and retry once
         if (msg.toLowerCase().includes('player does not exist') || msg.toLowerCase().includes('player was disposed')) {
           console.log(`[mynumbers] detected disposed player for key=${key}, attempting recreate`)
-            try {
+          try {
             if (SOUND_FILES[key]) {
               const res = await Audio.Sound.createAsync(SOUND_FILES[key])
               soundsRef.current[key] = res.sound
@@ -227,7 +211,7 @@ export default function Mynumbers() {
           }
 
           // fallback to pop if recreate failed
-            try {
+          try {
             if (SOUND_FILES.pop) {
               const res2 = await Audio.Sound.createAsync(SOUND_FILES.pop)
               soundsRef.current.pop = res2.sound

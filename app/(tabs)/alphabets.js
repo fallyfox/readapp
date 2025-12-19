@@ -37,6 +37,7 @@ export default function Alphabets() {
     // per-item flip toggles and per-item animated values
     const [imageToggles, setImageToggles] = useState({})
     const flipAnimsRef = useRef({})
+    const [showSplash, setShowSplash] = useState(true)
 
     const getFlipAnim = (i) => {
         if (!flipAnimsRef.current[i]) flipAnimsRef.current[i] = new Animated.Value(0)
@@ -67,8 +68,13 @@ export default function Alphabets() {
             try {
                 const { sound } = await Audio.Sound.createAsync(require('../sounds/pop.mp3'))
                 if (mounted) soundRef.current = sound
+                // Hide splash after sound loads (or after 1 second)
+                setTimeout(() => {
+                    if (mounted) setShowSplash(false)
+                }, 2000)
             } catch (e) {
                 console.log('Error loading sound', e)
+                if (mounted) setShowSplash(false)
             }
         })()
         return () => {
@@ -89,6 +95,20 @@ export default function Alphabets() {
         }
     }
     const styles = useMemo(() => getStyles(responsiveSizes), [responsiveSizes])
+
+    if (showSplash) {
+        return (
+            <SafeAreaProvider>
+                <SafeAreaView style={[styles.container, styles.splashContainer]}>
+                    <Animated.Image 
+                        source={require('../../assets/images/splash icon (1).png')} 
+                        style={styles.splashImage}
+                        resizeMode="contain"
+                    />
+                </SafeAreaView>
+            </SafeAreaProvider>
+        )
+    }
 
     return(
         <SafeAreaProvider>
@@ -170,9 +190,9 @@ const getStyles = (sizes) => StyleSheet.create({
         fontFamily: 'BrophyOpti',
     },
     selectedBox: {
-        borderWidth: sizes.borderWidth,
-        borderColor: appTheme.orange,
-        borderRadius: sizes.itemSize / 2,
+        // borderWidth: sizes.borderWidth,
+        // borderColor: appTheme.orange,
+        // borderRadius: sizes.itemSize / 2,
         
     },
     letterImage: {
@@ -185,7 +205,7 @@ const getStyles = (sizes) => StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
-        borderRadius: sizes.itemSize / 2,
+        // borderRadius: sizes.itemSize / 2,
         overflow: 'hidden',
 
     },
@@ -203,11 +223,13 @@ const getStyles = (sizes) => StyleSheet.create({
 
 
     },
-    cardFront: {
-        // front face (optional styles)
+    splashContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    cardBack: {
-        // back face (optional styles)
+    splashImage: {
+        width: 200,
+        height: 200,
     },
   header: { textAlign: 'center',
         fontSize: 35,

@@ -28,5 +28,5 @@ export const LetterItems = [
   { letter: 'Z' ,image: require('../assets/images/zebra.png')}
 ]
 
-// convenience export of just letters (keeps compatibility)
+
 export const Letters = LetterItems.map(i => i.letter)

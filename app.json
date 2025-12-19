@@ -4,7 +4,7 @@
     "slug": "readapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/AppIcon.png",
+    "icon": "./assets/images/mainappicon.png",
     "scheme": "readapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -18,9 +18,9 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/AppIcon.png",
-        "backgroundImage": "./assets/images/AppIcon.png",
-        "monochromeImage": "./assets/images/AppIcon.png"
+        "foregroundImage": "./assets/images/mainappicon.png",
+        "backgroundImage": "./assets/images/mainappicon.png",
+        "monochromeImage": "./assets/images/mainappicon.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
